@@ -1,0 +1,1 @@
+export const pokemonGetUrl = state => state.pokemonDetailUrl;
