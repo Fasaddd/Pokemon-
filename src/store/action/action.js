@@ -6,3 +6,9 @@ export const setPokemonUrl = url => {
         res: url
     };
 };
+export const changeModalStatus = status => {
+    return {
+        type: actionTypes.CHANGE_MODAL_STATUS,
+        res: status
+    }
+};

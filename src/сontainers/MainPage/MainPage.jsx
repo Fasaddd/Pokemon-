@@ -6,6 +6,7 @@ import classes from './MainPage.module.scss';
 
 
 const MainPage = props => {
+
     return (
         <div className={classes.main}>
             <header>

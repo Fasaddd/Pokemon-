@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { v1 as uuid } from "uuid"
+import { bindActionCreators } from 'redux';
 
-import { pokemonGetUrl } from '../../store/reselect/selector';
+import { changeModalStatus } from '../../store/action/action';
+import { pokemonGetUrl, modalGetStatus } from '../../store/reselect/selector';
 import classes from './PokemonDetail.module.scss';
 import Loader from '../../components/Loader/Loader';
 
@@ -12,6 +14,7 @@ class PokemonDetail extends Component {
         pokemonDetail: null,
         loading: false,
         showError: false,
+        visibleDetail: false
     };
 
     componentDidUpdate(prevProps) {
@@ -55,18 +58,23 @@ class PokemonDetail extends Component {
     };
 
 
-
     render() {
         const { pokemonDetail, loading, showError } = this.state;
+        const { showDetail } = this.props;
+        let displayDetail = 'flex';
 
-        let showDetail = <p>Choose pokemon to see details</p>;
-        if (loading) showDetail = <Loader />
-        else if (showError) showDetail = <p>Something goes wrong</p>
+        if(!showDetail) displayDetail = 'none'
+        else displayDetail = 'flex';
+
+        let outputDetail = <p>Choose pokemon to see details</p>;
+        if (loading) outputDetail = <Loader />
+        else if (showError) outputDetail = <p>Something goes wrong</p>
         else if (pokemonDetail !== null) {
-            showDetail = (
+            outputDetail = (
                 <React.Fragment>
-                    <img src={pokemonDetail.img} alt="pokemonImg" className={classes.pokemonDetail__img} />
-                    <h3>{pokemonDetail.name} #{pokemonDetail.id}</h3>
+                    <span onClick={() => this.props.actions.changeModalStatus(false)} className={classes.close}>X</span>
+                    <img src={pokemonDetail.img} alt="poknImg" className={classes.pokemonDetail__img} />
+                    <h3>{pokemonDetail.name} #{pokemonDetail.id}</h3>emo
                     {pokemonDetail.stats.map(el => (
                         <p className={classes.pokemonDetail__item} key={uuid()}>
                             <span className={classes.pokemonDetail__item_key}>{el.stat.name}</span>
@@ -78,20 +86,29 @@ class PokemonDetail extends Component {
         };
 
         return (
-            <div className={classes.detail__wrapper}>
-                <div className={classes.pokemonDetail} >
-                    {showDetail}
+                <div className={classes.detail__wrapper} style={{display: displayDetail}}>
+                    <div className={classes.pokemonDetail} >
+                        {outputDetail}
+                    </div>
                 </div>
-            </div>
-
         );
     };
 };
 
 const mapStateToProps = state => {
     return {
-        pokemonUrl: pokemonGetUrl(state)
+        pokemonUrl: pokemonGetUrl(state),
+        showDetail: modalGetStatus(state)
     };
 };
 
-export default connect(mapStateToProps)(PokemonDetail);
+const mapDispatchToProps = dispatch => ({
+    actions: bindActionCreators(
+        {
+            changeModalStatus
+        },
+        dispatch
+    )
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PokemonDetail);

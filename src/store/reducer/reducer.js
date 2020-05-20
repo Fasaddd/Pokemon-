@@ -1,7 +1,8 @@
 import * as actionTypes from '../actionTypes';
 
 const initialState = {
-    pokemonDetailUrl: ''
+    pokemonDetailUrl: '',
+    modalOpen: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -10,6 +11,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 pokemonDetailUrl: action.res
+            };
+        case actionTypes.CHANGE_MODAL_STATUS:
+            return {
+                ...state,
+                modalOpen: action.res
             };
         default:
             return state;

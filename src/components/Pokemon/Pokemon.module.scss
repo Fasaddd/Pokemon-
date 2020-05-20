@@ -2,9 +2,9 @@
     position: relative;
     background-color: #f6f8fa;
     border: 1px solid #000;
-    width: 25%;
+    width: 30%;
     padding: 10px 15px;
-    margin: 10px;
+    margin: 10px auto;
     min-height: 300px;
     cursor: pointer;
     &__detail {
@@ -40,4 +40,20 @@
 	to {
 		transform: scale(1);
 	}
+}
+
+@media(max-width: 1400px){
+    .pokemonItem{
+        width: 45%;
+    }
+}
+@media(max-width: 1000px){
+    .pokemonItem{
+        width: 30%;
+    }
+}
+@media(max-width: 767px){
+    .pokemonItem{
+        width: 90%;
+    }
 }

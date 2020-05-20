@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { v1 as uuid } from "uuid"
 import { bindActionCreators } from 'redux';
 
-import { setPokemonUrl } from '../../store/action/action';
+import { setPokemonUrl, changeModalStatus } from '../../store/action/action';
+
 import classes from './Pokemon.module.scss';
 
 const defaultColor = {
@@ -20,7 +21,11 @@ const defaultColor = {
 
 const Pokemon = (props) => {
     const { pokemonInfo, actions } = props;
-    const onPokemonClick = res => actions.setPokemonUrl(res);
+    const onPokemonClick = res => {
+        actions.setPokemonUrl(res);
+        actions.changeModalStatus(true);
+    };
+
     return (
         <React.Fragment>
             <div className={classes.pokemonItem}>
@@ -49,7 +54,8 @@ const Pokemon = (props) => {
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(
         {
-            setPokemonUrl
+            setPokemonUrl,
+            changeModalStatus
         },
         dispatch
     )
